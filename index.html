@@ -3,19 +3,25 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>AirPro — Premium Monitoring</title>
+  <title>AirPro — Monitoring</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Tailwind (Keep for utility/grid) -->
+  <!-- Tailwind (Utility) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  <!-- Leaflet Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
   <!-- Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-  <!-- Custom Premium CSS -->
+  <!-- Dark Glass CSS -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -23,52 +29,38 @@
 
   <!-- 1. SPLASH SCREEN -->
   <div id="splash-view">
-    <div class="splash-text-container">
-      <h1 class="splash-main">Ride Safe</h1>
-      <p class="splash-sub">With AirPro</p>
-    </div>
+    <h1 class="splash-main">RIDE SAFE</h1>
+    <p class="splash-sub" style="font-size: 1rem; margin-top: -10px; color: #94a3b8;"><sub>with Air Pro</sub></p>
   </div>
 
-  <!-- 2. AUTH SCREEN (Hidden initially via CSS/JS logic) -->
+  <!-- 2. AUTH SCREEN -->
   <div id="auth-view" class="hidden">
-    <div class="glass glass-panel auth-card fade-in">
+    <div class="glass auth-card fade-in">
       <h2 class="auth-title">Welcome Back</h2>
-      <p class="auth-subtitle">Sign in to monitor your safety status.</p>
+      <p class="auth-subtitle">Please sign in to continue.</p>
 
       <form id="auth-form">
-        <input type="email" class="auth-input" placeholder="Email Address" value="user@airpro.com">
-        <input type="password" class="auth-input" placeholder="Password" value="password123">
+        <input type="email" class="auth-input" placeholder="user@airpro.com" value="user@airpro.com">
+        <input type="password" class="auth-input" placeholder="••••••" value="password123">
         <button type="submit" class="auth-btn">
           Access Dashboard
         </button>
       </form>
-
-      <div class="auth-toggle">
-        Don't have an account? <span>Sign Up</span>
-      </div>
     </div>
   </div>
 
-  <!-- 3. MAIN DASHBOARD (Hidden initially) -->
+  <!-- 3. MAIN DASHBOARD -->
   <div id="dashboard-view" class="hidden fade-in">
 
     <!-- Sidebar -->
     <aside class="sidebar">
-      <h1 class="text-3xl font-bold text-white mb-10 tracking-wider">AirPro</h1>
+      <h1 class="text-2xl font-bold text-white mb-10 tracking-wider">AirPro</h1>
 
       <nav>
-        <a href="#" class="nav-item active">
-          <i class="fas fa-th-large w-8"></i> Dashboard
-        </a>
-        <a href="features.html" class="nav-item">
-          <i class="fas fa-bolt w-8"></i> Features
-        </a>
-        <a href="about.html" class="nav-item">
-          <i class="fas fa-info-circle w-8"></i> About
-        </a>
-        <a href="contact.html" class="nav-item">
-          <i class="fas fa-envelope w-8"></i> Contact
-        </a>
+        <a href="#" class="nav-item active"><i class="fas fa-th-large"></i> Dashboard</a>
+        <a href="features.html" class="nav-item"><i class="fas fa-bolt"></i> Features</a>
+        <a href="about.html" class="nav-item"><i class="fas fa-info-circle"></i> About</a>
+        <a href="contact.html" class="nav-item"><i class="fas fa-envelope"></i> Contact</a>
       </nav>
 
       <div class="mt-auto text-xs text-gray-500">
@@ -77,80 +69,75 @@
     </aside>
 
     <!-- Content -->
-    <main class="flex-1 p-8 lg:p-12 overflow-y-auto">
+    <main class="flex-1 p-8 lg:p-12 overflow-y-auto w-full">
 
       <!-- Header -->
       <header class="flex justify-between items-center mb-10">
         <div>
-          <h2 class="text-3xl font-semibold text-white">Live Monitoring</h2>
+          <h2 class="text-3xl font-bold text-white">Live Monitoring</h2>
           <p class="text-gray-400 text-sm mt-1">Real-time helmet telemetry</p>
         </div>
-        <!-- User Profile / Logout -->
+
         <div class="flex items-center gap-4">
           <button id="logout-btn" class="text-sm text-gray-400 hover:text-white transition">Logout</button>
-          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 border-2 border-white/20">
-          </div>
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-500 border border-white/20"></div>
         </div>
       </header>
 
       <!-- Stats Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 mb-10">
 
         <!-- AQI Card -->
         <div class="glass stat-card">
           <div class="stat-label">Air Quality</div>
           <div class="flex items-baseline gap-2">
-            <div id="aqiValue" class="stat-value text-indigo-400">--</div>
+            <div id="aqiValue" class="stat-value text-cyan">--</div>
             <span class="text-sm text-gray-400">AQI</span>
           </div>
-          <div id="aqiStatus" class="mt-2 text-sm text-gray-500 font-medium">Synced</div>
         </div>
 
         <!-- Battery Card -->
         <div class="glass stat-card">
           <div class="stat-label">Battery Level</div>
           <div class="flex items-baseline gap-2">
-            <div id="battery" class="stat-value text-emerald-400">--</div>
+            <div id="battery" class="stat-value text-green-400">--</div>
+            <span class="text-sm text-gray-400">%</span>
           </div>
-          <div class="w-full bg-gray-700 h-1.5 mt-4 rounded-full overflow-hidden">
-            <div class="bg-emerald-400 h-full w-[0%]" style="width: 80%"></div>
-            <!-- Dynamic width could be added via JS -->
+          <!-- Progress bar -->
+          <div class="w-full bg-gray-700 h-1.5 mt-3 rounded-full overflow-hidden">
+            <div class="bg-green-400 h-full w-[80%]"></div>
           </div>
         </div>
 
         <!-- Fan Status -->
         <div class="glass stat-card">
           <div class="stat-label">Purifier / Fan</div>
-          <div id="fan" class="stat-value text-purple-400 text-2xl">--</div> <!-- text-2xl for text status -->
-          <div class="mt-2 text-sm text-gray-500">Auto-System Active</div>
+          <div id="fan" class="stat-value text-purple text-2xl mt-1">--</div>
         </div>
 
         <!-- Accident Status -->
-        <div class="glass stat-card relative overflow-hidden">
+        <div class="glass stat-card">
           <div class="stat-label">Collision Status</div>
-          <div id="accident" class="text-2xl font-bold text-gray-200 mt-2">--</div>
-          <!-- Ambient glow for status -->
-          <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-red-500/10 rounded-full blur-xl"></div>
+          <div id="accident" class="stat-value text-2xl mt-1">--</div>
         </div>
 
       </div>
 
-      <!-- Charts Section -->
-      <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <!-- Charts & Map Section -->
+      <div class="grid grid-cols-1 xl:grid-cols-3">
 
         <!-- Gauge -->
-        <div class="glass p-8 rounded-2xl">
-          <h3 class="stat-label mb-6">Current AQI Intensity</h3>
-          <div class="relative h-48 flex justify-center items-center">
+        <div class="glass p-8 xl:col-span-1 flex flex-col items-center justify-center">
+          <h3 class="stat-label mb-4">Current Intensity</h3>
+          <div class="relative h-48 w-48">
             <canvas id="aqiGauge"></canvas>
-            <!-- Center text overlay for gauge if needed -->
           </div>
         </div>
 
         <!-- Trend Chart -->
-        <div class="glass p-8 rounded-2xl xl:col-span-2">
+        <div class="glass p-8 xl:col-span-2">
           <div class="flex justify-between items-center mb-6">
-            <h3 class="stat-label">Air Quality History</h3>
+            <h3 class="stat-label">Start History</h3>
             <select class="bg-black/20 text-xs text-gray-400 border border-white/10 rounded px-2 py-1 outline-none">
               <option>Last Hour</option>
             </select>
@@ -160,6 +147,28 @@
           </div>
         </div>
 
+        <!-- Map (Added Feature) -->
+        <div class="glass p-0 xl:col-span-3 overflow-hidden relative border-none h-[400px]">
+
+          <!-- Permission Overlay -->
+          <div id="map-overlay"
+            class="absolute inset-0 z-[1000] flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-500">
+            <i class="fas fa-location-arrow text-4xl text-cyan-400 mb-4 animate-bounce"></i>
+            <h3 class="text-white text-xl font-bold mb-2">Enable Live Tracking</h3>
+            <p class="text-gray-300 text-sm mb-6 text-center max-w-xs">Allow access to your location for real-time
+              safety monitoring and accident routing.</p>
+            <button id="enable-location-btn"
+              class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-2 px-6 rounded-full transition transform hover:scale-105 shadow-[0_0_15px_rgba(34,211,238,0.5)]">
+              <i class="fas fa-satellite-dish mr-2"></i> ALLOW ACCESS
+            </button>
+            <button id="dismiss-overlay-btn" class="mt-4 text-xs text-gray-400 hover:text-white underline">
+              View Map without Tracking
+            </button>
+          </div>
+
+          <div id="map" class="w-full h-full"></div>
+        </div>
+
       </div>
 
     </main>
@@ -167,9 +176,9 @@
 
   <!-- Application Logic -->
   <script type="module" src="js/app-flow.js"></script>
-  <!-- Firebase Logic (Original) -->
   <script type="module" src="js/dashboard.js"></script>
   <script type="module" src="js/charts.js"></script>
+  <script type="module" src="js/map.js"></script>
 
 </body>
 

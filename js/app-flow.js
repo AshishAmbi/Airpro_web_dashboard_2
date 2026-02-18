@@ -1,4 +1,5 @@
-// DOM Elements
+import { refreshMap } from "./map.js";
+
 const views = {
     splash: document.getElementById('splash-view'),
     auth: document.getElementById('auth-view'),
@@ -8,77 +9,68 @@ const views = {
 const authForm = document.getElementById('auth-form');
 const logoutBtn = document.getElementById('logout-btn');
 
-// Configuration
-const SPLASH_DURATION = 3500; // 3.5s total (allows for animation)
+const SPLASH_DURATION = 2500; // 2.5s (Snappy)
 
 function init() {
-    // Check session
     const isAuthenticated = sessionStorage.getItem('airpro_session');
-
     if (isAuthenticated) {
-        showDashboard(true); // true = skip animation
+        showDashboard(true);
     } else {
         runSplashSequence();
     }
 }
 
 function runSplashSequence() {
-    // Ensure splash is visible
     views.splash.classList.remove('hidden');
     views.auth.classList.add('hidden');
     views.dashboard.classList.add('hidden');
 
     setTimeout(() => {
-        // Fade out splash
         views.splash.classList.add('fade-out');
-        
-        // Wait for fade out to finish, then show auth
         setTimeout(() => {
             views.splash.classList.add('hidden');
             views.auth.classList.remove('hidden');
-        }, 500); // match css animation duration
-
+        }, 500);
     }, SPLASH_DURATION);
 }
 
 function login(e) {
     e.preventDefault();
-    
     const btn = authForm.querySelector('button');
     const originalText = btn.innerText;
-    
-    // Simulate API call
-    btn.innerText = 'Verifying...';
-    btn.style.opacity = '0.7';
-    
+
+    // Tech/Cyber Feel
+    btn.innerText = 'AUTHENTICATING...';
+    btn.style.opacity = '0.8';
+
     setTimeout(() => {
-        // Success
-        sessionStorage.setItem('airpro_session', 'true');
-        
-        // Transition
-        views.auth.classList.add('fade-out');
-        
+        btn.innerText = 'ACCESS GRANTED';
+        btn.style.background = '#22c55e'; // Green success
+
         setTimeout(() => {
-            views.auth.classList.add('hidden');
-            showDashboard();
-            
-            // Reset button
-            btn.innerText = originalText;
-            btn.style.opacity = '1';
-        }, 500);
-        
-    }, 1500);
+            views.auth.classList.add('fade-out');
+            sessionStorage.setItem('airpro_session', 'true');
+
+            setTimeout(() => {
+                views.auth.classList.add('hidden');
+                showDashboard();
+
+                btn.innerText = originalText;
+                btn.style.opacity = '1';
+                btn.style.background = '';
+            }, 500);
+        }, 800);
+    }, 1200);
 }
 
 function showDashboard(skipAnimation = false) {
-    views.splash.classList.add('hidden'); // Ensure splash is gone
-    views.auth.classList.add('hidden');   // Ensure auth is gone
-    
+    views.splash.classList.add('hidden');
+    views.auth.classList.add('hidden');
     views.dashboard.classList.remove('hidden');
-    
-    if (!skipAnimation) {
-        views.dashboard.classList.add('fade-in');
-    }
+
+    if (!skipAnimation) views.dashboard.classList.add('fade-in');
+
+    refreshMap();
 }
 
 function logout() {
@@ -86,7 +78,6 @@ function logout() {
     window.location.reload();
 }
 
-// Event Listeners
 document.addEventListener('DOMContentLoaded', init);
 authForm.addEventListener('submit', login);
 if (logoutBtn) logoutBtn.addEventListener('click', logout);

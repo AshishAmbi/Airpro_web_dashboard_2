@@ -19,5 +19,4 @@ echo Initializing repository...
 %GIT_PATH% push -u origin main
 
 echo Done!
-pause
 
