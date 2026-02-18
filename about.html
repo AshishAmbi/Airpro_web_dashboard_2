@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>About — AirPro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body { font-family: 'Poppins', sans-serif; }
+
+.glass {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.gradient-text {
+  background: linear-gradient(90deg,#6366f1,#06b6d4,#8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+</style>
+</head>
+
+<body class="bg-gradient-to-br from-slate-950 via-slate-900 to-black text-gray-200">
+
+<div class="flex min-h-screen">
+
+  <aside class="w-72 p-10 glass border-r border-white/10">
+    <h1 class="text-3xl font-bold gradient-text mb-14">AirPro</h1>
+    <nav class="space-y-6 text-sm">
+      <a href="index.html" class="block hover:text-indigo-400">Dashboard</a>
+      <a href="features.html" class="block hover:text-indigo-400">Features</a>
+      <a href="about.html" class="block text-white font-semibold">About</a>
+      <a href="contact.html" class="block hover:text-indigo-400">Contact</a>
+    </nav>
+  </aside>
+
+  <main class="flex-1 p-16">
+
+    <h2 class="text-4xl font-semibold mb-12 gradient-text">
+      About AirPro
+    </h2>
+
+    <div class="glass p-12 rounded-3xl max-w-4xl">
+      <p class="text-lg leading-relaxed text-gray-300">
+        AirPro Smart Helmet is an IoT-based safety and air quality monitoring system.
+        It continuously monitors AQI, battery level, accident detection, and fan system status
+        using real-time Firebase database integration.
+      </p>
+
+      <p class="mt-6 text-gray-400">
+        Designed for riders and industrial workers, AirPro enhances safety
+        through smart alerts, live monitoring dashboards, and intelligent environmental analysis.
+      </p>
+
+      <div class="mt-10 grid md:grid-cols-2 gap-8">
+        <div class="glass p-6 rounded-xl">
+          <h3 class="text-indigo-400 font-semibold mb-2">Vision</h3>
+          <p class="text-gray-400 text-sm">
+            Create intelligent wearable systems for real-time safety monitoring.
+          </p>
+        </div>
+
+        <div class="glass p-6 rounded-xl">
+          <h3 class="text-indigo-400 font-semibold mb-2">Technology</h3>
+          <p class="text-gray-400 text-sm">
+            Built using Firebase, IoT sensors, and modern web technologies.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+</body>
+</html>
